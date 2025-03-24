@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import { FaEnvelope, FaLock, FaPlusCircle } from "react-icons/fa";
-import { MdOutlineDelete } from "react-icons/md";
-import { BiLogOut } from "react-icons/bi";
+import { GoPlusCircle } from "react-icons/go";
+import { MdOutlineDelete, MdOutlineLock,  } from "react-icons/md";
+import { IoLogOutOutline, IoMailOutline } from "react-icons/io5";
 import Sidebar from "./SideBar";
-import userimg from "../assets/person.png";
+import userimg from "../assets/girl.jpg";
 
 const Account = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -111,7 +111,7 @@ const Account = () => {
           <div className="relative mt-2 flex flex-col sm:flex-row sm:items-center gap-3">
             {/* Email Input */}
             <div className="relative w-full">
-              <FaEnvelope className="absolute left-3 top-3 text-yellow-500" />
+              <IoMailOutline className="absolute left-3 top-3 text-yellow-500" />
               <input
                 type="email"
                 value={email}
@@ -130,7 +130,7 @@ const Account = () => {
             {/* Add Another Email Button */}
             <div className="flex justify-end sm:justify-start">
               <button className="font-semibold border border-gray-300 px-4 py-2 rounded-md text-sm flex items-center gap-2 hover:bg-gray-50 transition w-[180px]">
-                <FaPlusCircle className="text-green-600" />
+                <GoPlusCircle className="text-green-600 text-lg" />
                 Add another email
               </button>
             </div>
@@ -160,17 +160,21 @@ const Account = () => {
           <div className="flex flex-col sm:flex-row justify-between mt-4 gap-4">
             <div className="flex flex-col sm:flex-row gap-4 w-full">
               <div className="relative w-full sm:w-1/2">
-                <FaLock className="absolute left-3 top-3 text-yellow-500" />
+                <MdOutlineLock className="absolute left-3 top-3 text-yellow-500" />
                 <input
                   type="password"
                   value={currentPassword}
                   onChange={(e) => setCurrentPassword(e.target.value)}
                   className="border border-gray-300 pl-10 pr-4 py-2 w-full rounded-md"
                   placeholder="Current password"
+                  style={{
+                    WebkitTextSecurity: "disc",
+                    color: "#facc15",
+                  }}
                 />
               </div>
               <div className="relative w-full sm:w-1/2">
-                <FaLock className="absolute left-3 top-3 text-yellow-500" />
+                <MdOutlineLock className="absolute left-3 top-3 text-yellow-500" />
                 <input
                   type="password"
                   value={newPassword}
@@ -179,7 +183,12 @@ const Account = () => {
                     passwordError ? "border-red-500" : "border-gray-300"
                   } pl-10 pr-4 py-2 w-full rounded-md`}
                   placeholder="New Password"
+                  style={{
+                    WebkitTextSecurity: "disc",
+                    color: "#facc15",
+                  }}
                 />
+
                 {passwordError && (
                   <p className="text-red-500 text-sm mt-1">{passwordError}</p>
                 )}
@@ -196,11 +205,16 @@ const Account = () => {
             Manage your account security
           </p>
           <div className="mt-3 flex flex-wrap gap-4">
-            <button className="flex items-center font-semibold gap-2 bg-gray-100 px-4 py-2 rounded-md text-sm">
-              <BiLogOut /> Log out
+            {/* Log out button */}
+            <button className="flex items-center gap-2 text-sm font-medium border border-gray-300 text-black px-4 py-2 rounded-md hover:bg-gray-100 transition">
+              <IoLogOutOutline  className="text-xl" />
+              Log out
             </button>
-            <button className="flex items-center font-semibold gap-2 bg-red-500 text-white px-4 py-2 rounded-md text-sm">
-              <MdOutlineDelete /> Delete my account
+
+            {/* Delete my account button */}
+            <button className="flex items-center gap-2 text-sm font-medium border border-red-400 text-red-500 px-4 py-2 rounded-md hover:bg-red-50 transition">
+              <MdOutlineDelete className="text-xl" />
+              Delete my account
             </button>
           </div>
         </div>
