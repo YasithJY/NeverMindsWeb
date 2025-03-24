@@ -1,90 +1,74 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { FaMedal, FaTrophy, FaHome, FaRedo } from "react-icons/fa";
-import Confetti from "react-confetti";
-import { useWindowSize } from "react-use";
-import nlogo from "../assets/nlogo.png";
+import {
+  CircularProgressbarWithChildren,
+  buildStyles,
+} from "react-circular-progressbar";
+import "react-circular-progressbar/dist/styles.css";
+import avatarImg from "../assets/girl.jpg";
+import { FaArrowRight } from "react-icons/fa";
 
 const QuizResult = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const { width, height } = useWindowSize();
 
-  // Retrieve score from state (default to 0 if undefined)
   const score = location.state?.score || 0;
-
-  // State to manage confetti visibility
-  const [showConfetti, setShowConfetti] = useState(false);
-
-  // Generate user feedback based on score
-  const getFeedback = () => {
-    if (score >= 90) {
-      return { message: "🏆 Excellent! You're a quiz champion!", color: "text-green-600" };
-    } else if (score >= 70) {
-      return { message: "🥇 Great Job! Keep it up!", color: "text-blue-600" };
-    } else if (score >= 50) {
-      return { message: "🎖 Good Effort! Try again!", color: "text-yellow-600" };
-    } else {
-      return { message: "😔 You Can Do Better! Keep Practicing!", color: "text-red-600" };
-    }
-  };
-
-  // Start confetti for 10 seconds when the component is mounted
-  useEffect(() => {
-    if (score >= 70) {
-      setShowConfetti(true);
-      const timer = setTimeout(() => {
-        setShowConfetti(false);
-      }, 10000); // Confetti will show for 10 seconds
-
-      return () => clearTimeout(timer);
-    }
-  }, [score]);
+  const correctAnswers = location.state?.correct || 8;
+  const totalQuestions = location.state?.total || 10;
+  const name = location.state?.name || "Your Name";
 
   return (
-    <div className="flex flex-col items-center min-h-screen w-full bg-[#fcfcfc] relative pt-24">
-      {/* Confetti Effect for High Scores */}
-      {showConfetti && <Confetti width={width} height={height} />}
-
-      {/* Content */}
-      <div className="flex flex-col items-center justify-center w-full max-w-4xl p-8 bg-yellow-50 rounded-lg shadow-lg">
-        {/* Result Title */}
-        <h1 className="text-[60px] font-semibold mb-4">Quiz Completed!</h1>
-        <p className="mt-2 text-[20px] font-medium text-gray-600 mb-6">Here is how you performed:</p>
-
-        {/* Score Section */}
-        <div className="bg-[#fff6d5] p-8 rounded-lg shadow-md mb-6 flex flex-col items-center">
-          <h2 className="text-6xl font-bold text-yellow-600">{score}%</h2>
-          <p className={`mt-2 text-lg font-semibold ${getFeedback().color}`}>
-            {getFeedback().message}
-          </p>
-        </div>
-
-        {/* Medal/Trophy Icon */}
-        <div className="mt-8 mb-6">
-          {score >= 70 ? (
-            <FaTrophy className="text-yellow-500 text-8xl mx-auto" />
-          ) : (
-            <FaMedal className="text-gray-500 text-8xl mx-auto" />
-          )}
-        </div>
-
-        {/* Action Buttons */}
-        <div className="flex justify-center gap-8 mt-6">
-          <button
-            onClick={() => navigate("/quizzes")}
-            className="bg-yellow-400 text-black font-bold px-6 py-2 rounded-lg hover:bg-yellow-300 transition flex items-center gap-2"
-          >
-            <FaRedo /> Try Again
-          </button>
-          <button
-            onClick={() => navigate("/")}
-            className="bg-gray-800 text-white font-bold px-6 py-2 rounded-lg hover:bg-gray-700 transition flex items-center gap-2"
-          >
-            <FaHome /> Home
-          </button>
-        </div>
+    <div className="flex flex-col items-center justify-center min-h-screen bg-[#f9f9f9] px-4 text-center">
+      {/* Avatar with Progress Ring */}
+      <div className="w-[150px] h-[150px] sm:w-[180px] sm:h-[180px] md:w-[196px] md:h-[196px] mb-6">
+        <CircularProgressbarWithChildren
+          value={score}
+          strokeWidth={3}
+          styles={buildStyles({
+            pathColor: "#facc15",
+            trailColor: "#e5e7eb",
+            strokeLinecap: "round",
+          })}
+        >
+          <img
+            src={avatarImg}
+            alt="User Avatar"
+            className="w-[100px] h-[100px] sm:w-[120px] sm:h-[120px] md:w-[140px] md:h-[140px] rounded-full object-cover"
+          />
+        </CircularProgressbarWithChildren>
       </div>
+
+      {/* Score */}
+      <div className="text-[40px] sm:text-[48px] md:text-[64px] font-bold bg-yellow-400 px-6 py-2 rounded-md mb-4">
+        {score}%
+      </div>
+
+      {/* Greeting */}
+      <h1 className="text-[24px] sm:text-[32px] md:text-[44px] font-semibold mb-2">
+        Great Job, <span className="font-bold">{name}</span> 🧚‍♀️
+      </h1>
+
+      {/* Summary */}
+      <p className="text-gray-700 text-[16px] sm:text-[18px] md:text-[20px] mb-1">
+        You’ve completed the quiz with {correctAnswers}/{totalQuestions} correct answers.
+        <button
+          className="ml-2 text-blue-600 underline text-sm inline-flex items-center"
+          onClick={() => navigate("/review")}
+        >
+          Review Answers <FaArrowRight className="ml-1" />
+        </button>
+      </p>
+
+      <p className="text-gray-400 text-[14px] sm:text-[16px] md:text-[20px] mb-8 px-2 sm:px-4">
+        Keep up the great work and continue improving your knowledge with more quizzes!
+      </p>
+
+      <button
+        onClick={() => navigate("/quizzes")}
+        className="bg-yellow-400 hover:bg-yellow-300 text-black text-[18px] sm:text-[20px] md:text-[24px] font-semibold px-6 py-2 rounded-md transition"
+      >
+        Try Another Quiz
+      </button>
     </div>
   );
 };

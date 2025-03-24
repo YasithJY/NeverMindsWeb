@@ -1,4 +1,5 @@
 import React, { useState, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import Sidebar from "./SideBar";
 import { IonIcon } from "@ionic/react";
 import { arrowForward } from "ionicons/icons";
@@ -16,6 +17,7 @@ import tutorIcon from "../assets/person.png";
 const ProfileDashboard = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
+  const navigate = useNavigate();
 
   const getGreeting = () => {
     const currentHour = new Date().getHours();
@@ -35,7 +37,7 @@ const ProfileDashboard = () => {
   };
 
   const handleEdit = () => {
-    alert("Edit button clicked!");
+    navigate("/account");
   };
 
   return (
@@ -125,7 +127,7 @@ const ProfileDashboard = () => {
               address="24/75 1st Lane Boralasgamuwa"
               profileImage={profileImage}
               greeting={getGreeting()}
-              onEdit={handleEdit}
+              onEdit={handleEdit} 
               progress={85}
             />
           </div>

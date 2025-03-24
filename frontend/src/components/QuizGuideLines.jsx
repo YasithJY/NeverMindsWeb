@@ -7,7 +7,7 @@ const QuizGuideLines = () => {
   const quiz = location.state?.quiz;
 
   useEffect(() => {
-    console.log("✅ Received Quiz Data in Guidelines Page:", quiz); // Debug log
+    console.log("Received Quiz Data in Guidelines Page:", quiz); // Debug log
   
     if (!quiz || !quiz.questions || quiz.questions.length === 0) {
       console.error("No quiz data found! Redirecting to quizzes...");
@@ -21,7 +21,7 @@ const QuizGuideLines = () => {
       return;
     }
   
-    console.log("✅ Quiz data before starting:", quiz); // Debug log
+    console.log("Quiz data before starting:", quiz); // Debug log
     navigate("/quiz", { state: { quiz } });
   };
   

@@ -9,7 +9,7 @@ const Quiz = () => {
   const quiz = location.state?.quiz;
 
   useEffect(() => {
-    console.log("✅ Received Quiz Data in Quiz Page:", quiz);
+    console.log("Received Quiz Data in Quiz Page:", quiz);
 
     if (!quiz || !quiz.questions || quiz.questions.length === 0) {
       console.error("❌ No quiz data found! Redirecting to quizzes...");
@@ -25,7 +25,7 @@ const Quiz = () => {
     );
   }
 
-  // ✅ FIX: Ensure timer starts correctly
+  //Ensure timer starts correctly
   const totalSeconds = isNaN(parseInt(quiz.duration))
     ? 1200
     : parseInt(quiz.duration) * 60;
@@ -37,7 +37,7 @@ const Quiz = () => {
   );
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
-  // ✅ Start Timer when Quiz Loads
+  //Start Timer when Quiz Loads
   useEffect(() => {
     if (timeLeft > 0) {
       const timer = setInterval(() => {
@@ -54,7 +54,7 @@ const Quiz = () => {
     }
   }, [timeLeft]);
 
-  // ✅ Timer Format Function
+  //Timer Format Function
   const formatTime = (seconds) => {
     if (isNaN(seconds)) return "00 : 00";
     const minutes = Math.floor(seconds / 60);

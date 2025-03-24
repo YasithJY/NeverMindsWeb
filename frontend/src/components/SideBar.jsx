@@ -74,15 +74,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
             {/* Logout Button */}
             <div className="mt-auto px-6 py-4">
               {/* Settings Section */}
-              <ul className="mt-6 space-y-4">
-                <li className="text-gray-500 text-sm uppercase font-bold tracking-wide">
-                  Settings
-                </li>
-                <li className="flex items-center gap-4 py-3 px-3 hover:bg-yellow-500 hover:text-black rounded-lg cursor-pointer transition-all duration-300">
-                  <IonIcon icon={settingsOutline} size="large" />
-                  <span className="text-lg font-medium">Settings</span>
-                </li>
-              </ul>
+              
               <button className="flex items-center gap-4 w-full text-lg font-medium text-red-600 hover:text-red-800 hover:bg-gray-100 rounded-lg py-3 px-3 transition-all duration-300">
                 <IonIcon icon={logOutOutline} size="large" />
                 <span>Logout</span>

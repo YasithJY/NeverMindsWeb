@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate, Link } from "react-router-dom";
 import nlogo from "../assets/nlogo.png";
 import { RxHamburgerMenu } from "react-icons/rx";
 import profileImg from "../assets/girl.jpg";
-import { Link } from "react-router-dom";
 import { FaTachometerAlt, FaSignOutAlt } from "react-icons/fa";
 import { MdLanguage } from "react-icons/md";
 
 const Header = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [user, setUser] = useState(null);
@@ -19,57 +19,40 @@ const Header = () => {
     setUser(JSON.parse(localStorage.getItem("user")));
   }, []);
 
-  const handleProfileClick = () => {
-    setIsProfileOpen(!isProfileOpen);
-  };
+  const handleProfileClick = () => setIsProfileOpen(!isProfileOpen);
+  const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
-  };
+  const shouldShowLanguageIcon = () =>
+    location.pathname === "/quizguidelines" || location.pathname === "/quizzes";
 
-  const shouldShowLanguageIcon = () => {
-    return (
-      location.pathname === "/quizguidelines" ||
-      location.pathname === "/quizzes"
-    );
-  };
+  const isQuizPage = () => location.pathname === "/quiz";
 
-  const isQuizPage = () => {
-    return location.pathname === "/quiz";
-  };
-
-  // Close the menu when clicking outside
-  useEffect(() => {
-    const closeMenuOnClickOutside = (event) => {
-      if (
-        !event.target.closest(".mobile-menu") &&
-        !event.target.closest(".hamburger-btn")
-      ) {
-        setIsMenuOpen(false);
+ 
+  const handleScrollTo = (id) => {
+    if (location.pathname === "/") {
+      const section = document.getElementById(id);
+      if (section) {
+        section.scrollIntoView({ behavior: "smooth" });
       }
-    };
+    } else {
+      navigate("/");
+      setTimeout(() => {
+        const section = document.getElementById(id);
+        if (section) {
+          section.scrollIntoView({ behavior: "smooth" });
+        }
+      }, 300);
+    }
+  };
 
-    document.addEventListener("click", closeMenuOnClickOutside);
-    return () => {
-      document.removeEventListener("click", closeMenuOnClickOutside);
-    };
-  }, []);
-
-  // Scroll event listener
+ 
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > lastScrollY && window.scrollY > 50) {
-        setVisible(false);
-      } else {
-        setVisible(true);
-      }
+      setVisible(window.scrollY < lastScrollY || window.scrollY < 50);
       setLastScrollY(window.scrollY);
     };
-
     window.addEventListener("scroll", handleScroll);
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
+    return () => window.removeEventListener("scroll", handleScroll);
   }, [lastScrollY]);
 
   return (
@@ -79,8 +62,8 @@ const Header = () => {
       }`}
     >
       <div className="w-full flex items-center justify-between">
-        {/* Logo */}
-        <div className="flex items-center">
+        {/*Logo click navigates to home section */}
+        <div className="flex items-center cursor-pointer" onClick={() => handleScrollTo("home")}>
           <img src={nlogo} alt="NeverMinds Logo" className="h-15 w-12" />
         </div>
 
@@ -88,50 +71,46 @@ const Header = () => {
           <MdLanguage className="h-6 w-6 text-yellow-500 cursor-pointer" />
         ) : (
           <>
-            {/* Desktop Navigation */}
+            {/* Desktop Nav */}
             <nav className="hidden lg:flex flex-1 ml-20">
               <ul className="flex space-x-6 text-[22px] font-regular text-black gap-10">
                 <li>
-                  <a
-                    href="#home"
+                  <button
+                    onClick={() => handleScrollTo("home")}
                     className="hover:text-[#FFD448] transition-colors"
                   >
                     Home
-                  </a>
+                  </button>
                 </li>
                 <li>
-                  <Link
-                    to="/quizzes"
-                    className="hover:text-[#FFD448] transition-colors"
-                  >
+                  <Link to="/quizzes" className="hover:text-[#FFD448] transition-colors">
                     Quizzes
                   </Link>
                 </li>
                 <li>
-                  <a
-                    href="#services"
+                <button
+                    onClick={() => handleScrollTo("services")}
                     className="hover:text-[#FFD448] transition-colors"
                   >
                     Services
-                  </a>
+                  </button>
                 </li>
                 <li>
-                  <Link
-                    to="/aboutus"
+                  <button
+                    onClick={() => handleScrollTo("contributors")}
                     className="hover:text-[#FFD448] transition-colors"
                   >
                     About Us
-                  </Link>
+                  </button>
                 </li>
               </ul>
             </nav>
 
-            {/* Desktop Profile & Language Icon */}
+            {/* Desktop Profile & Language */}
             <div className="hidden lg:flex text-lg items-center space-x-6 ml-auto">
               {shouldShowLanguageIcon() && (
                 <MdLanguage className="h-6 w-6 text-yellow-500 cursor-pointer" />
               )}
-
               {user ? (
                 <div
                   className="relative w-10 h-10 rounded-full border-2 border-[#FFD448] cursor-pointer"
@@ -171,21 +150,15 @@ const Header = () => {
               )}
             </div>
 
-            {/* Mobile Menu Toggle */}
+            {/* Mobile Menu */}
             <div className="lg:hidden flex items-center">
-              <button
-                onClick={toggleMenu}
-                className="text-gray-700 focus:outline-none hamburger-btn"
-              >
+              <button onClick={toggleMenu} className="text-gray-700 hamburger-btn">
                 <RxHamburgerMenu size={30} />
               </button>
 
-              {/* Mobile Menu Dropdown */}
               <div
                 className={`fixed inset-0 w-full h-max backdrop-blur-xl bg-black/90 flex flex-col items-center justify-center space-y-6 text-xl font-normal transition-transform duration-300 ${
-                  isMenuOpen
-                    ? "translate-y-0 opacity-100"
-                    : "-translate-y-full opacity-0"
+                  isMenuOpen ? "translate-y-0 opacity-100" : "-translate-y-full opacity-0"
                 }`}
               >
                 <button
@@ -194,27 +167,47 @@ const Header = () => {
                 >
                   ✕
                 </button>
+
+                <button
+                  onClick={() => {
+                    handleScrollTo("home");
+                    toggleMenu();
+                  }}
+                  className="text-white hover:text-yellow-500 transition-colors"
+                >
+                  Home
+                </button>
+
                 <Link
                   to="/quizzes"
+                  onClick={toggleMenu}
                   className="text-white hover:text-yellow-500 transition-colors"
                 >
                   Quizzes
                 </Link>
-                <a
-                  href="#services"
+
+                <button
+                  onClick={() => {
+                    handleScrollTo("services");
+                    toggleMenu();
+                  }}
                   className="text-white hover:text-yellow-500 transition-colors"
                 >
                   Services
-                </a>
-                <Link
-                  to="/aboutus"
+                </button>
+
+                <button
+                  onClick={() => {
+                    handleScrollTo("contributors");
+                    toggleMenu();
+                  }}
                   className="text-white hover:text-yellow-500 transition-colors"
                 >
                   About Us
-                </Link>
+                </button>
+
                 <hr className="w-2/3 border-gray-300" />
 
-                {/* Profile or Login Buttons */}
                 {user ? (
                   <div className="flex flex-col items-center space-y-4">
                     <Link

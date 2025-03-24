@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { FaEnvelope, FaLock } from "react-icons/fa";
+import { FaEnvelope, FaLock, FaPlusCircle } from "react-icons/fa";
 import { MdOutlineDelete } from "react-icons/md";
 import { BiLogOut } from "react-icons/bi";
 import Sidebar from "./SideBar";
@@ -69,7 +69,7 @@ const Account = () => {
             </div>
           </div>
           <div className="flex flex-wrap gap-2 font-semibold">
-            <button className="bg-gray-100 px-4 py-2 rounded-md text-sm">
+            <button className="bg-white border border-gray-500 px-4 py-2 rounded-md text-sm">
               Upload new picture
             </button>
             <button className="bg-gray-200 px-4 py-2 rounded-md text-sm">
@@ -101,13 +101,16 @@ const Account = () => {
         <hr className="border-yellow-500 my-4" />
 
         {/* Contact Email Section */}
-        <div className="mt-6 flex flex-col sm:flex-row justify-between items-start sm:items-center">
-          <div className="w-full sm:w-3/4">
-            <h2 className="font-semibold">Contact email</h2>
-            <p className="text-sm font-semibold text-gray-500">
-              Manage your account's email address
-            </p>
-            <div className="relative mt-2">
+        <div className="mt-6">
+          <h2 className="font-semibold">Contact email</h2>
+          <p className="text-sm font-semibold text-gray-500">
+            Manage your account's email address
+          </p>
+
+          {/* Email Input and Button */}
+          <div className="relative mt-2 flex flex-col sm:flex-row sm:items-center gap-3">
+            {/* Email Input */}
+            <div className="relative w-full">
               <FaEnvelope className="absolute left-3 top-3 text-yellow-500" />
               <input
                 type="email"
@@ -123,20 +126,38 @@ const Account = () => {
                 <p className="text-red-500 text-sm mt-1">{emailError}</p>
               )}
             </div>
+
+            {/* Add Another Email Button */}
+            <div className="flex justify-end sm:justify-start">
+              <button className="font-semibold border border-gray-300 px-4 py-2 rounded-md text-sm flex items-center gap-2 hover:bg-gray-50 transition w-[180px]">
+                <FaPlusCircle className="text-green-600" />
+                Add another email
+              </button>
+            </div>
           </div>
-          <button className="mt-2 sm:mt-0 font-semibold bg-gray-100 px-4 py-2 rounded-md text-sm flex items-center gap-2">
-            Add another email
-          </button>
         </div>
         <hr className="border-yellow-500 my-4" />
 
         {/* Password Section */}
         <div className="mt-6">
-          <h2 className="font-semibold">Password</h2>
-          <p className="text-sm font-semibold text-gray-500">
-            Modify your current password
-          </p>
-          <div className="flex flex-col sm:flex-row justify-between items-center mt-4">
+          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
+            <div>
+              <h2 className="font-semibold">Password</h2>
+              <p className="text-sm font-semibold text-gray-500">
+                Modify your current password
+              </p>
+            </div>
+            <div className="flex gap-2">
+              <button className="font-semibold bg-white border border-gray-500 px-4 py-2 rounded-md text-sm">
+                Confirm password
+              </button>
+              <button className="font-semibold bg-gray-100 px-4 py-2 rounded-md text-sm">
+                Cancel
+              </button>
+            </div>
+          </div>
+
+          <div className="flex flex-col sm:flex-row justify-between mt-4 gap-4">
             <div className="flex flex-col sm:flex-row gap-4 w-full">
               <div className="relative w-full sm:w-1/2">
                 <FaLock className="absolute left-3 top-3 text-yellow-500" />
@@ -163,14 +184,6 @@ const Account = () => {
                   <p className="text-red-500 text-sm mt-1">{passwordError}</p>
                 )}
               </div>
-            </div>
-            <div className="flex gap-2 mt-4 sm:mt-0">
-              <button className="font-semibold bg-gray-100 sm:ml-2 px-4 py-2 rounded-md text-sm">
-                Confirm password
-              </button>
-              <button className="font-semibold bg-gray-100 px-4 py-2 rounded-md text-sm">
-                Cancel
-              </button>
             </div>
           </div>
         </div>

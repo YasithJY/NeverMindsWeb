@@ -13,6 +13,7 @@ import box5img from "../assets/i6.png";
 
 export function Contributors() {
   return (
+    <section id="contributors">
     <div className="bg-[#f9c226] min-w-screen min-h-screen py-8 sm:px-5">
       <div className="max-w-4xl px-4 md:px-0 flex flex-col mx-auto text-black mt-4">
         <div className="flex flex-row gap-6 md:gap-24">
@@ -91,6 +92,7 @@ export function Contributors() {
         })}
       </BentoGrid>
     </div>
+    </section>
   );
 }
 
